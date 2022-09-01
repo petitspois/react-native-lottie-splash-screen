@@ -24,7 +24,7 @@ public class SplashScreen {
   /**
    * 打开启动屏
    */
-  public static void show(final Activity activity, final int themeResId, final int lottieId) {
+  public static void show(final Activity activity, final int themeResId, final int lottieId, final boolean fullScreen) {
     if (activity == null)
       return;
     mActivity = new WeakReference<Activity>(activity);
@@ -35,6 +35,9 @@ public class SplashScreen {
           mSplashDialog = new Dialog(activity, themeResId);
           mSplashDialog.setContentView(R.layout.launch_screen);
           mSplashDialog.setCancelable(false);
+          if(fullScreen){
+            setActivityAndroidP(mSplashDialog);
+          }
           LottieAnimationView lottie = (LottieAnimationView) mSplashDialog.findViewById(lottieId);
 
           lottie.addAnimatorListener(new Animator.AnimatorListener() {
@@ -91,9 +94,9 @@ public class SplashScreen {
     });
   }
 
-  public static void show(final Activity activity, int lottieId) {
+  public static void show(final Activity activity, int lottieId, final boolean fullScreen) {
     int resourceId = R.style.SplashScreen_SplashTheme;
-    show(activity, resourceId, lottieId);
+    show(activity, resourceId, lottieId, fullScreen);
   }
 
   /**
@@ -131,5 +134,18 @@ public class SplashScreen {
         }
       }
     });
+  }
+
+    @SuppressLint("WrongConstant")
+  private static void setActivityAndroidP(Dialog dialog) {
+    //设置全屏展示
+    if (Build.VERSION.SDK_INT >= 28) {
+      if (dialog != null && dialog.getWindow() != null) {
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);//全屏显示
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        dialog.getWindow().setAttributes(lp);
+      }
+    }
   }
 }
