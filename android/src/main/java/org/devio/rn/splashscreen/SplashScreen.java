@@ -1,9 +1,12 @@
 package org.devio.rn.splashscreen;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Build;
+import android.view.WindowManager;
+
 import com.airbnb.lottie.LottieAnimationView;
 import java.lang.ref.WeakReference;
 
@@ -136,7 +139,7 @@ public class SplashScreen {
     });
   }
 
-    @SuppressLint("WrongConstant")
+  @SuppressLint("WrongConstant")
   private static void setActivityAndroidP(Dialog dialog) {
     //设置全屏展示
     if (Build.VERSION.SDK_INT >= 28) {
@@ -148,4 +151,5 @@ public class SplashScreen {
       }
     }
   }
+
 }
